@@ -1,0 +1,4 @@
+name = ISO 639-2
+description = Provides list of ISO 639-2 language codes with autocomplete functionality.
+version = 0.1
+core = 6.x

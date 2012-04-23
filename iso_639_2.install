@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function iso_639_2_install() {
+  drupal_install_schema('iso_639_2');
+  _iso_639_2_populate();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function iso_639_2_uninstall() {
+  drupal_uninstall_schema('iso_639_2');
+}
+
+/**
+ * Implements hook_schema().
+ */
+function iso_639_2_schema() {
+  $schema = array();
+  
+  $schema['iso_639_2'] = array(
+    'description' => 'The table for ISO 639-2 codes representing languages.',
+    'fields' => array(
+      'alpha_3' => array(
+        'description' => 'The alpha-3 bibliographic code.',
+        'type' => 'varchar',
+        'length' => 3,
+        'not null' => TRUE
+      ),
+      'term' => array(
+        'description' => 'The alpha-3 terminological code.',
+        'type' => 'varchar',
+        'length' => 3,
+      ),
+      'alpha_2' => array(
+        'description' => 'The alpha-2 bibliographic code.',
+        'type' => 'varchar',
+        'length' => 2,
+      ),
+      'en' => array(
+        'description' => 'The name of the language in English.',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+      ),
+      'fr' => array(
+        'description' => 'The name of the language in French.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'indexes' => array(
+      'iso_639_2_en' => array('en'),
+    ),
+    'unique keys' => array(
+      'alpha_3' => array('alpha_3'),
+    ),
+    'primary key' => array('alpha_3'),
+  );
+  return $schema;
+  
+  }
+
+  function _iso_639_2_populate() {
+    $module_path = drupal_get_path('module','iso_639_2');
+    if (($handle = fopen("$module_path/csv/ISO-639-2_utf-8.txt", "r")) !== FALSE) {
+      while (($line = fgetcsv($handle,0,'|')) !== FALSE) {
+        // insert data
+        $record = new StdClass();
+        $record->alpha_3 = $line[0];
+        $record->term = $line[1];
+        $record->alpha_2 = $line[2];
+        $record->en = $line[3];
+        $record->fr = $line[4];
+        drupal_write_record('iso_639_2',$record);
+      }
+      fclose($handle);
+    }
+  }
+
