@@ -1,4 +1,8 @@
 <?php
+
+function iso_639_2_init() {
+  drupal_add_js(drupal_get_path('module','iso_639_2') .'/js/iso-639-2.js');
+}
  
 /**
  * Implementation of hook_menu().
@@ -20,7 +24,7 @@ function iso_639_2_autocomplete($string) {
   $matches = array();
   $result = db_query('SELECT * FROM {iso_639_2} WHERE LOWER(en) LIKE LOWER("%s%%")',$string, 0, 10);
   while ($match = db_fetch_object($result)) {
-    $matches[$match->alpha_3] = check_plain($match->en .' ['. $match->alpha_3 .']'); 
+    $matches[$match->en] = check_plain($match->en .' ['. $match->alpha_3 .']'); 
   }
   drupal_json($matches);
 }
