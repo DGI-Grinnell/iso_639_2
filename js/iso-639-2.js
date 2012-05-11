@@ -2,9 +2,11 @@ $(document).ready(function() {
     
   Drupal.jsAC.prototype.select = function (node) {
     this.input.value = this.selected.autocompleteValue;
-    var code = this.selected.innerText.match(/\[(\w+)\]/)[1];
-    // now populate the linked field
-    $('input[name*="language_iso"]').val(code);
+    if (this.input.name.match(/language_text/)) {
+      var code = this.selected.innerText.match(/\[(\w+)\]/)[1];
+      // now populate the linked field
+      $('input[name*="language_iso"]').val(code);
+    }
   };
 
   Drupal.jsAC.prototype.hidePopup = function (keycode) {
