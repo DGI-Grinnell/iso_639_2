@@ -1,7 +1,7 @@
 <?php
 
 function iso_639_2_init() {
-  // drupal_add_js(drupal_get_path('module','iso_639_2') .'/js/iso-639-2.js');
+  drupal_add_js(drupal_get_path('module','iso_639_2') .'/js/iso-639-2.js');
 }
  
 /**
